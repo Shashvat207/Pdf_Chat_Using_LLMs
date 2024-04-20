@@ -10,7 +10,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 #from dotenv import load_dotenv
 
-#genai.configure(api_key=r"AIzaSyAii1By4Xh2GNer1m4OKQLBgV-QkVD4b7I")
+#genai.configure(api_key=r"")
 
 def get_pdf_text(pdf_docs):
     text=""
@@ -24,7 +24,7 @@ def get_text_chunks(text):
     chunks=text_splitter.split_text(text)
     return chunks
 def get_vector_store(text_chunks):
-    embeddings=GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=r"AIzaSyAii1By4Xh2GNer1m4OKQLBgV-QkVD4b7I")
+    embeddings=GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=r"")
     vectors=faiss.FAISS.from_texts(text_chunks,embedding=embeddings)
     vectors.save_local("faiss_index")
 
@@ -37,12 +37,12 @@ def get_conversational_chain():
 
     Answer:
     """
-    model=ChatGoogleGenerativeAI(model="gemini-pro",temperature=0.3,google_api_key=r"AIzaSyAii1By4Xh2GNer1m4OKQLBgV-QkVD4b7I")
+    model=ChatGoogleGenerativeAI(model="gemini-pro",temperature=0.3,google_api_key=r"")
     prompt=PromptTemplate(template=prompt_template,input_variables=["context","question"])
     chain=load_qa_chain(model,chain_type="stuff",prompt=prompt)
     return chain
 def user_input(user_question):
-    embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001",google_api_key=r"AIzaSyAii1By4Xh2GNer1m4OKQLBgV-QkVD4b7I")
+    embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001",google_api_key=r"")
     
     new_db = faiss.FAISS.load_local("faiss_index", embeddings,allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
